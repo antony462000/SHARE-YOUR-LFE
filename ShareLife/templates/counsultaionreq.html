@@ -1,0 +1,46 @@
+{% extends 'hospitalindex.html' %}
+{% block content %}
+
+<div class="container mt-5">
+
+    {% for m in messages  %}
+                              
+        <h5 class="text-info">{{m}}</h5>
+        {% endfor %}
+        <!-- <a href="{%url 'GetAppoinment' %}" class="btn">Get Appointment</a> -->
+        <br><br>
+
+        <h4>Scheduled Appointments</h4><br><br>
+    <table class="table">
+        <tr>
+            <th>Patient</th>
+            <th>Doctor</th>
+            <th>Hospital</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Status</th>
+        </tr>
+        {% for i in consultation %}
+        <tr>
+            <td>{{i.patient}}</td>
+            <td>{{i.doctor.user.first_name}}</td>
+            <td>{{i.hospitel}}</td>
+            <td>{{i.date}}</td>
+            <td>{{i.time}}</td>
+            <td>
+                {% if i.approval == False %}
+                <span  class="badge bg-warning">Pending</span>
+                <a href="{%url 'ApproveConsultationrequest' i.id %}" class="btn btn-sm btn-success">Approve</a>
+                {% else %}
+                <span class="badge bg-success">Approved</span>
+               
+
+                {% endif %} 
+
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

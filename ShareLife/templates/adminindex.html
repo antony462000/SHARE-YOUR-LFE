@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+  <title>RealEstate</title>
+  <style>
+    .modal-body input {
+      border: .5px solid gray !important;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg bg-info">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Admin Organ Donation</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="admin/">More edits</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Admin
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{%url 'SignOut' %}">Logout</a></li>
+
+            </ul>
+          </li>
+      </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h6 style="color:red;text-align:center;"> {{form.errors}}</h6>
+    {% for m in messages %}
+
+    <h3 class="text-danger">{{m}}</h3>
+    {% endfor %}
+    <h4>Doctor Details</h4>
+    <table class="table">
+      <tr>
+        <th>Doctor Name</th>
+        <th>Doctor Specialisation</th>
+        <th>Address</th>
+        <th>Status</th>
+        <th>Last Login</th>
+        <th>action</th>
+      </tr>
+      {% for i in doctor %}
+      <tr>
+        <td>{{i.user.first_name}}</td>
+        <td>{{i.Specilisation}}</td>
+        <th>{{i.Address}} {{i.district}}</th>
+        <td>
+          {% if i.active == False %}
+          <span  class="badge bg-warning">Pending</span>
+          {% else %}
+          <span class="badge bg-success">Approved</span>
+          {% endif %} 
+        </td>
+        <td>{{i.user.last_login}}</td>
+        <td><a data-bs-toggle="modal" data-bs-target="#{{i.user.username}}" class="btn btn-dark">View</a></td>
+      </tr>
+      <!-- Modal -->
+      <div class="modal fade" id="{{i.user.username}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Dr.{{i.user.first_name}} {{i.last_name}} {{i.Specilisation}}</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+              <div class="row">
+                <div class="col-md-4">
+                  <img src="{{i.profile_pic.url}}" style="width:200px" height="150px" alt="">
+                </div>
+                <div class="col-md-6">
+                  
+                    
+                    Name:  {{i.user.first_name}} {{i.last_name}}
+                    
+                   
+                     Specialisation: {{i.Specilisation}}
+                   <br><br>
+                 
+                    Address:{{i.Address}} 
+                      {{i.district}}
+                      {{i.state}} PH: {{i.phone}}
+
+                      <br><br>
+                      Approve/Reject
+                    
+                      {% if i.active == False %}
+                      <a href="{%url 'ApproveDoctor' i.id %}"  class="btn btn-outline-success btn-sm">Approve</a>
+                      {% else %}
+                      <a href="{%url 'ApproveDoctor' i.id %}" class="btn btn-outline-warning btn-sm">Block Access</a>
+                      {% endif %} 
+                
+                </div>
+              </div>
+
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </table>
+  </div>
+
+
+  <div class="container mt-5">
+    <h6 style="color:red;text-align:center;"> {{form.errors}}</h6>
+    {% for m in messages %}
+
+    <p class="text-danger">{{m}}</p>
+    {% endfor %}
+    <h4>Hospital Details</h4>
+    <table class="table">
+      <tr>
+        <th>Hospital Name</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Status</th>
+        <th>Last Login</th>
+        <th>Action</th>
+      </tr>
+      {% for i in hospital %}
+      <tr>
+        <td>{{i.user.first_name}}</td>
+        <td>{{i.phone}}</td>
+        <th>{{i.Address}} {{i.district}}</th>
+        <td>
+          {% if i.active == False %}
+          <span  class="badge bg-warning">Pending</span>
+          {% else %}
+          <span class="badge bg-success">Approved</span>
+          {% endif %} 
+        </td>
+        <td>{{i.user.last_login}}</td>
+        <td><a data-bs-toggle="modal" data-bs-target="#{{i.user.username}}" class="btn btn-dark">View</a></td>
+      </tr>
+      <!-- Modal -->
+      <div class="modal fade" id="{{i.user.username}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Hospital Details</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-4">
+                  <img src="{{i.profile_pic.url}}" style="width:200px" height="150px" alt="">
+
+
+                </div>
+                <div class="col-md-8">
+                  
+                  Name:  {{i.user.first_name}} {{i.name}}
+                    
+                   
+                  
+                <br><br>
+              
+                 Address:{{i.Address}} 
+                   {{i.district}}
+                   {{i.state}} PH: {{i.phone}}
+
+                   <br><br>
+                   Approve/Reject
+                 
+                   {% if i.active == False %}
+                   <a href="{%url 'ApproveHospital' i.id %}" class="btn btn-outline-success btn-sm">Approve</a>
+                   {% else %}
+                   <a href="{%url 'ApproveHospital' i.id %}" class="btn btn-outline-warning btn-sm">Block Access</a>
+                   {% endif %} 
+
+                </div>
+
+              </div>
+
+
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </table>
+  </div>
+
+  <div class="container mt-5">
+    <h6 style="color:red;text-align:center;"> {{form.errors}}</h6>
+    {% for m in messages %}
+
+    <p class="text-danger">{{m}}</p>
+    {% endfor %}
+    <h4>User Details</h4>
+    <table class="table">
+      <tr>
+        <th> Name</th>
+        <th>Phone</th>
+        <th>Address</th>
+        
+        <th>Last Login</th>
+        <th>Action</th>
+      </tr>
+      {% for i in user %}
+      <tr>
+        <td>{{i.user.first_name}}</td>
+        <td>{{i.phone}}</td>
+        <th>{{i.Address}} {{i.district}}</th>
+        
+        <td>{{i.user.last_login}}</td>
+        <td><a data-bs-toggle="modal" data-bs-target="#{{i.user.username}}" class="btn btn-dark">View</a></td>
+      </tr>
+      <!-- Modal -->
+      <div class="modal fade" id="{{i.user.username}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">User Details</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-4">
+                  <img src="{{i.profile_pic.url}}" style="width:200px" height="150px" alt="">
+
+
+                </div>
+                <div class="col-md-8">
+                  
+                  Name:  {{i.user.first_name}} {{i.last_name}}
+                    
+                   
+                  
+                <br><br>
+              
+                 Address:{{i.Address}} 
+                   {{i.district}}
+                   {{i.state}} PH: {{i.phone}}
+
+                   <br><br>
+                   
+
+                </div>
+
+              </div>
+
+
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </table>
+  </div>
+
+
+
+
+
+</body>
+
+</html>

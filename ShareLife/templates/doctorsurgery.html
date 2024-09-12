@@ -1,0 +1,43 @@
+{% extends 'doctorindex.html' %}
+{% block content %}
+
+
+<div class="container mt-5">
+
+    {% for m in messages  %}
+                              
+        <h5 class="text-info">{{m}}</h5>
+    {% endfor %}
+        <br><br>
+
+        <h4>Patients Surgery</h4><br><br>
+    <table class="table">
+        <tr>
+            <th>Organ</th>
+            <th>surgery_date</th>
+            <th>admint_date</th>
+            <th>comments_doctor</th>
+            <th>Status</th>
+        </tr>
+        {% for i in surgey %}
+        <tr>
+            <td>{{i.organrequest}}</td>
+            <td>{{i.surgery_date}}</td>
+            <td>{{i.admint_date}}</td>
+            <td>{{i.comments_doctor}}</td>
+            <td>
+                {% if i.surgery_status == False %}
+                <span  class="badge bg-warning">Pending</span>
+                <a href="" class="btn btn-info">Mark As Completed </a>
+                {% else %}
+                <span class="badge bg-success">Completed</span>
+                {% endif %} 
+
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+
+{% endblock %}

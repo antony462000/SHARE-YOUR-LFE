@@ -1,0 +1,89 @@
+{% extends 'index.html' %}
+{% block content %}
+
+
+<div class="container mt-5">
+
+    {% for m in messages  %}
+                              
+        <h5 class="text-info">{{m}}</h5>
+        {% endfor %}
+        <br><br>
+
+
+        <h4>Organs Requests</h4><br><br>
+        <table class="table mt-2 mb-5">
+            <tr>
+                <th>Organ</th>
+                <th>Bloodgroup</th>
+                <th>Patient</th>
+                <th>Doner Hospital</th>
+                <th>Status</th>
+                <th>Medical Record</th>
+                <!-- <th>Add Surgery</th> -->
+            </tr>
+            {% for i in donationrequest %}
+            <tr>
+                <td>{{i}}</td>
+                
+                <td>{{i.patient.Bloodgroup}}</td>
+                <td>{{i.patient}}</td>
+    
+                <td>{{i.Organ.Hospital}}</td>
+               
+                <td>
+                    {% if i.request_status == False %}
+                    <span  class="badge bg-warning">Not Availabile</span>
+                    {% else %}
+                    <span class="badge bg-success">Availabile</span>
+                    {% endif %} 
+    
+                </td>
+                {% if i.is_healthrecord_status == True %}
+            <th><a href="{{i.HealthRecord.url}}"  target="_blank" class="btn btn-info btn-sm">View Record</a></th>
+            {% else %}
+            <td>
+                <form action="{%url 'UploadRecord' i.id %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" name="record" required>
+                    <button type="submit" class="btn btn-sm btn-dark">upload</button>
+                </form>
+            </td>
+            {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+
+        <h4>My Surgery</h4><br><br>
+    <table class="table mt-2 mb-5">
+        <tr>
+            <th>Organ</th>
+            <th>surgery_date</th>
+            <th>admint_date</th>
+            <th>comments_doctor</th>
+            <th>Status</th>
+            
+        </tr>
+        {% for i in surgery %}
+        <tr>
+            <td>{{i.organrequest}}</td>
+            <td>{{i.surgery_date}}</td>
+            <td>{{i.admint_date}}</td>
+            <td>{{i.comments_doctor}}</td>
+            <td>
+                {% if i.surgery_status == False %}
+                <span  class="badge bg-warning">Pending</span>
+                {% else %}
+                <span class="badge bg-success">Completed</span>
+                {% endif %} 
+
+            </td>
+            
+
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+
+{% endblock %}

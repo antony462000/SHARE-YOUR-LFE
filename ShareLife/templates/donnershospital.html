@@ -1,0 +1,43 @@
+
+{% extends 'hospitalindex.html' %}
+{% block content %}
+
+
+<div class="container mt-5">
+
+    {% for m in messages  %}
+                              
+        <h5 class="text-info">{{m}}</h5>
+        {% endfor %}
+        <br><br>
+
+        <h4>List of  Doners</h4><br><br>
+    <table class="table">
+        <tr>
+            <th>Organ</th>
+            <th>Bloodgroup</th>
+            <th>HealthPath</th>
+            <th>Hospital</th>
+            <th>Status</th>
+        </tr>
+        {% for i in donation %}
+        <tr>
+            <td>{{i.organ}}</td>
+            <td>{{i.Bloodgroup}}</td>
+            <td>{{i.HealthPath}}</td>
+            <td>{{i.Hospital}}</td>
+            <td>
+                {% if i.availability == False %}
+                <span  class="badge bg-warning">Not Availabile</span>
+                {% else %}
+                <span class="badge bg-success">Availabile</span>
+                {% endif %} 
+
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+
+{% endblock %}

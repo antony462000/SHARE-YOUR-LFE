@@ -1,0 +1,58 @@
+{% extends 'index.html' %}
+{% block content %}
+<style>
+    .content{
+        padding: 20px;
+        width: 60%;
+        border: 1px solid #1A76D1;
+        margin: auto;
+
+    }
+    .content input, select{
+        width:100%;
+    }
+</style>
+
+
+<div class="container mt-5 mb-5">
+
+    <div class="content">
+        <h3 class="text-center text-primary">Hospital Registration</h3>
+        {% for m in messages  %}
+                              
+        <h5 class="text-danger">{{m}}</h5>
+        {% endfor %}
+        <h5 class="text-danger">{{form.errors}}</h5>
+        <br><br>
+   
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+            {% for field in form %}
+            <div class="col-md-6">
+            {{field.label}}: <br>
+            {{field}} <br><br>
+            </div>
+            {% endfor %}
+            {% for field in form1 %}
+            <div class="col-md-6">
+            {{field.label}}: <br>
+            {{field}} <br><br>
+            </div>
+            {% endfor %}
+        </div>
+            <button class="btn" type="submit">Register</button>
+        </form>
+        Have an Account Click <a href="{%url 'SignIn' %}" >Here</a> <br><br>
+        Click <a href="{%url 'DoctorSignUp' %}" class="text-info">Here</a> For Doctor Registerbr <br><br>
+        For user Account Click <a href="{%url 'SignUp' %}" class="text-warning" >Here</a> <br>
+
+
+
+
+    </div>
+
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'index.html' %}
+{% block content %}
+<style>
+    .content {
+        padding: 20px;
+        width: 60%;
+        border: 1px solid #1A76D1;
+        margin: auto;
+
+    }
+</style>
+
+
+<div class="container mt-5 mb-5">
+
+    <div class="content">
+        <h3 class="text-center text-primary">Login</h3>
+        {% for m in messages  %}
+                              
+        <h5 class="text-info">{{m}}</h5>
+        {% endfor %}
+        <br><br>
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+
+                    <input type="text" name="uname" placeholder="Username" class="form-control" required> <br><br>
+                </div>
+                <div class="col-md-6">
+
+                    <input type="password" name="pswd" placeholder="Password" class="form-control" required> <br><br>
+                </div>
+            </div>
+            <button class="btn" type="submit">Login</button>
+        </form>
+        Dont Have an Account Click <a href="{%url 'SignUp' %}" class="text-warning" >Here</a>
+
+    </div>
+
+
+</div>
+
+{% endblock %}

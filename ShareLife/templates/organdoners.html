@@ -1,0 +1,87 @@
+{% extends 'doctorindex.html' %}
+{% block content %}
+
+
+<div class="container mt-5">
+    <a href="{%url 'OrganDonationAdd' %}" class="btn">Add Doners</a>
+    <a href="{%url 'AddOrganRequets' %}" class="btn">Add Organ Request</a>
+<br><br>
+    {% for m in messages  %}
+                              
+        <h5 class="text-info">{{m}}</h5>
+        {% endfor %}
+        <br><br>
+
+        <h4>Available Organs</h4><br><br>
+    <table class="table">
+        <tr>
+            <th>Organ</th>
+            <th>Donar</th>
+            <th>Bloodgroup</th>
+            <th>HealthPath</th>
+            <th>Doner Hospital</th>
+            <th>Status</th>
+        </tr>
+        {% for i in donation %}
+        <tr>
+            <td>{{i.organ}}</td>
+            <td>{{i.doner}}</td>
+            <td>{{i.Bloodgroup}}</td>
+            <td>{{i.HealthPath}}</td>
+            <td>{{i.Hospital}}</td>
+            <td>
+                {% if i.availability == False %}
+                <span  class="badge bg-warning">Not Availabile</span>
+                {% else %}
+                <span class="badge bg-success">Availabile</span>
+                {% endif %} 
+
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+
+    <h4>Organs Requests</h4><br><br>
+    <table class="table">
+        <tr>
+            <th>Organ</th>
+            <th>Bloodgroup</th>
+            <th>Patient</th>
+            <th>Doner Hospital</th>
+            <th>Status</th>
+            <th>Record</th>
+            <th>Add Surgery</th>
+        </tr>
+        {% for i in donationrequest %}
+        <tr>
+            <td>{{i}}</td>
+            
+            <td>{{i.patient.Bloodgroup}}</td>
+            <td>{{i.patient}}</td>
+
+            <td>{{i.Organ.Hospital}}</td>
+           
+            <td>
+                {% if i.request_status == False %}
+                <span  class="badge bg-warning">Not Availabile</span>
+                {% else %}
+                <span class="badge bg-success">Availabile</span>
+                {% endif %} 
+
+            </td>
+            {% if i.is_healthrecord_status == False %}
+            <td>No record Available</td>
+            <td></td>
+
+            {% else %}
+            <th><a href="{{i.HealthRecord.url}}"  target="_blank" class="btn btn-dark">View Record</a></th>
+            <td><a href="{%url 'Addsurgery' i.id %}" class="btn btn-info btn-sm">Add Surgery</a></td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+
+{% endblock %}

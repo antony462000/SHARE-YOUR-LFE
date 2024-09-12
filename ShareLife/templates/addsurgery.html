@@ -1,0 +1,38 @@
+{% extends 'doctorindex.html' %}
+{% block content %}
+
+<style>
+    .content {
+        padding: 20px;
+        width: 80%;
+        border: 1px solid #1A76D1;
+        margin: auto;
+
+    }
+</style>
+
+
+<div class="container mt-5 mb-5">
+
+    <div class="content">
+        <h3 class="text-center text-primary"> Add Surgery</h3>
+        {% for m in messages  %}
+                              
+        <h5 class="text-info">{{m}}</h5>
+        {% endfor %}
+        <br><br>
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+            {% for field in form %}
+            <div class="col-md-6">
+            {{field.label}}: <br>
+            {{field}} <br><br>
+            </div>
+            {% endfor %}
+            </div>
+            <button class="btn" type="submit">Add Surgery</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

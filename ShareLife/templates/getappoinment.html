@@ -1,0 +1,68 @@
+{% extends 'index.html' %}
+{% block content %}
+
+<style>
+    .content {
+        padding: 20px;
+        width: 80%;
+        border: 1px solid #1A76D1;
+        margin: auto;
+
+    }
+</style>
+
+
+<div class="container mt-5 mb-5">
+
+    <div class="content">
+        <h3 class="text-center text-primary">Get an Appointment</h3>
+        {% for m in messages  %}
+                              
+        <h5 class="text-info">{{m}}</h5>
+        {% endfor %}
+        <br><br>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+            {% for field in form %}
+            <div class="col-md-6">
+            {{field.label}}: <br>
+            {{field}} <br><br>
+            </div>
+            {% endfor %}
+            </div>
+            <button class="btn" type="submit">Get Appointment</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Event listener for donor select field change
+function bloodGroupChange(x) {
+            console.log("working")
+
+            var selectedDonorId = x;
+            console.log(selectedDonorId)
+            console.log(typeof(selectedDonorId))
+
+            if (selectedDonorId) {
+                // Send AJAX request to get the blood group of the selected donor
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/Donation/getbloodgroup/" + parseInt(selectedDonorId), true);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.success) {
+                            document.getElementById("demo").value = response.bloodGroup; // Update the content of the demo element
+                        } else {
+                            alert("Error: Unable to fetch donor's blood group.");
+                        }
+                    }
+                };
+                xhr.send();
+            } else {
+                document.getElementById("demo").value = ""; // Clear the content of the demo element if no donor is selected
+            }
+        };
+</script>
+{% endblock %}
